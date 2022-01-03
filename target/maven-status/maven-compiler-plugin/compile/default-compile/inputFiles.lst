@@ -1,7 +1,7 @@
-/home/lenezet/Bureau/Project_Poo/src/main/java/Communication/TypeOfMessage.java
-/home/lenezet/Bureau/Project_Poo/src/main/java/Communication/ConnectMessage.java
-/home/lenezet/Bureau/Project_Poo/src/main/java/Communication/IncomingMessageListener.java
-/home/lenezet/Bureau/Project_Poo/src/main/java/Communication/ChangeName.java
-/home/lenezet/Bureau/Project_Poo/src/main/java/Communication/CommunicationManager.java
-/home/lenezet/Bureau/Project_Poo/src/main/java/Communication/DisconnectMessage.java
-/home/lenezet/Bureau/Project_Poo/src/main/java/Communication/WrongType.java
+C:\Users\Utilisateur\Desktop\Clavardage_POO\src\main\java\Communication\ConnectMessage.java
+C:\Users\Utilisateur\Desktop\Clavardage_POO\src\main\java\Communication\ChangeName.java
+C:\Users\Utilisateur\Desktop\Clavardage_POO\src\main\java\Communication\CommunicationManager.java
+C:\Users\Utilisateur\Desktop\Clavardage_POO\src\main\java\Main.java
+C:\Users\Utilisateur\Desktop\Clavardage_POO\src\main\java\Communication\DisconnectMessage.java
+C:\Users\Utilisateur\Desktop\Clavardage_POO\src\main\java\Communication\TypeOfMessage.java
+C:\Users\Utilisateur\Desktop\Clavardage_POO\src\main\java\Communication\WrongType.java

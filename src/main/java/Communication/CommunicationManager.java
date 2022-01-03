@@ -6,7 +6,7 @@ import java.net.*;
 public class CommunicationManager extends Thread{
     private InetAddress BroadcastAddr = Inet4Address.getByAddress(new byte[] {-1,-1,-1,-1});
     private DatagramSocket socket;
-    private boolean disconnected = true;
+    private boolean disconnected = false;
 
     public CommunicationManager(int port) throws Exception {
         this.socket = new DatagramSocket(port, Inet4Address.getByAddress(new byte[] {0,0,0,0}));
@@ -40,7 +40,7 @@ public class CommunicationManager extends Thread{
             }
 
             TypeOfMessage message = TypeOfMessage.from_packet(receivedPckt);
-            System.console().printf(message.toString());
+            System.out.print(message.toString());System.out.flush();
         }
     }
 }

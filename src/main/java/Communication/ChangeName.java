@@ -4,11 +4,11 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 
-public class ChangeName extends TypeOfMessage{
+public class ChangeName extends TypeOfMessage {
     private String name;
 
     public ChangeName(int port, InetAddress adress, String name) {
-        super(port, adress, TypeMessage.ChangeName);
+        super(port, adress, TypeOfMessage.TypeMessage.ChangeName);
         this.name = name;
     }
 
@@ -16,6 +16,7 @@ public class ChangeName extends TypeOfMessage{
         super(packet);
         byte nameLength = packet.getData()[1];
         this.name = new String(packet.getData(),2,(int)nameLength, StandardCharsets.UTF_8);
+
     }
 
     public DatagramPacket to_packet(){

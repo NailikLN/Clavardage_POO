@@ -83,25 +83,7 @@ public class TypeOfMessage
         }
     }
 
-   /* public void sendMessage(int port, InetAddress adress, String message) throws Exception{
-        DatagramSocket senderSocket = new DatagramSocket();
-        byte[] data = message.getBytes();
-        DatagramPacket datagramPacket = new DatagramPacket(data, data.length);
-        datagramPacket.setAddress(adress);
-        datagramPacket.setPort(port);
-
-        senderSocket.send(datagramPacket);
-        senderSocket.close();
+    public String toString(){
+        return "Type :" + type;
     }
-
-    public void getMessage(int port, IncomingMessageListener incomingMessageListener) throws Exception{
-        DatagramSocket receiverSocket = new DatagramSocket(port);
-        DatagramPacket receivedPacket = new DatagramPacket(new byte[500], 500);
-        receiverSocket.receive(receivedPacket);
-        byte[] data = receivedPacket.getData();
-
-        receiverSocket.close();
-
-        incomingMessageListener.onNewIncomingMessage(new String(data));
-    }*/
 }
