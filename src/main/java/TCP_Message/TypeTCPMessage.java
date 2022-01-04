@@ -10,7 +10,6 @@ public class TypeTCPMessage {
 
     public enum TypeMessage
     {
-        REQUEST_MESSAGE,
         MESSAGE,
         WRONG_TYPE;
 

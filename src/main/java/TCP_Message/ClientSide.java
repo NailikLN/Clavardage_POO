@@ -48,15 +48,15 @@ public class ClientSide extends Thread{
         }
     }
 
-    private String GetMessage(MessageTCP messageReceive) {
+    public String GetMessage(MessageTCP messageReceive) {
         //String Message = null;
         //System.arraycopy(messageReceive,2,Message,0, messageReceive.length());
         return messageReceive.getMessage();
     }
 
-    private void SendMessage(String message) throws IOException
+    public void SendMessage(String message) throws IOException
     {
-        this.outputStream.writeObject(new MessageTCP(message));
+        this.outputStream.writeObject(new MessageTCP(message, socketClient.getInetAddress()));
     }
 
 
