@@ -68,7 +68,7 @@ public class CommunicationManager extends Thread{
             }
 
             TypeOfMessage message = TypeOfMessage.from_packet(receivedPckt);
-            System.out.println(message.toString());
+            System.out.println(message.toString() + "clac");
 
             this.database.updateDatabase(message);
             if(this.database.getName() != null && message.getType() == TypeOfMessage.TypeMessage.Connect)

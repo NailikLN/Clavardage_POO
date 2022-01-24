@@ -89,6 +89,7 @@ public class BDD {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         String strDate = dateFormat.format(date);
         prepState.setString(4, strDate);
+        prepState.executeUpdate();
 
     }
     public void putSentMessage(InetAddress inetAddress, MessageTCP messageReceive) throws SQLException {
