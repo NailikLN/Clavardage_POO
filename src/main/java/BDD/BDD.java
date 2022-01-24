@@ -75,13 +75,16 @@ public class BDD {
                     this.ListUsersConnected.remove(messageUDP.getAdress());
             }
             case ChangeName -> {
+                System.out.println("glagla");
                 if(!this.ListUsersConnected.contains(messageUDP.getAdress()))
                 {
+                    System.out.println("put1 :" + ((ChangeName) messageUDP).getName());
                     this.ListUsersConnected.add(messageUDP.getAdress());
                 }
+
                 if(!this.adressByName.containsKey(((ChangeName) messageUDP).getName()))
                 {
-                    System.out.println("put :" + ((ChangeName) messageUDP).getName());
+                    System.out.println("put2 :" + ((ChangeName) messageUDP).getName());
                     this.adressByName.put(((ChangeName) messageUDP).getName(), messageUDP.getAdress());
                     this.nameByAdress.put(messageUDP.getAdress(), ((ChangeName) messageUDP).getName());
                 }

@@ -34,7 +34,7 @@ public class CommunicationManager extends Thread{
                     continue;
 
                 this.BroadcastAddr = broadcast;
-                System.out.println(broadcast + "\n");
+                System.out.println(broadcast + " n \n");
             }
         }
 
