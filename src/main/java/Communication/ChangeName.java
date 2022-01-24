@@ -19,6 +19,11 @@ public class ChangeName extends TypeOfMessage {
 
     }
 
+    public String getName()
+    {
+        return this.name;
+    }
+
     public DatagramPacket to_packet(){
         byte buffer[] = new byte[LENGTH_BUFFER];
         buffer[0] = this.type.to_byte();

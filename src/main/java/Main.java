@@ -1,12 +1,21 @@
 import Communication.CommunicationManager;
+import TCP_Message.ServerSideMessage;
+import BDD.BDD;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 
 public class Main {
     public static void main(String[] args) throws Exception{
-        CommunicationManager comm = new CommunicationManager(1250);
+        BDD database = new BDD();
+        database.initDatabase();
+
+
+        CommunicationManager comm = new CommunicationManager(1250, database);
+        ServerSideMessage serverSideMessage = new ServerSideMessage(1250, database);
         comm.start();
+        serverSideMessage.start();
 
         boolean running = true ;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -23,6 +32,7 @@ public class Main {
                     comm.Disconnect();
                     running = false;
                 }
+                case "/send" -> {if (cli_args.length >= 3)serverSideMessage.SendToClient(cli_args[1], cli_args[2]);}
             }
         }
     }
