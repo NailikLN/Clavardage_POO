@@ -2,6 +2,7 @@ package BDD;
 
 import Communication.ChangeName;
 import Communication.TypeOfMessage;
+import Communication.*;
 import TCP_Message.MessageTCP;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -80,6 +81,7 @@ public class BDD {
                 }
                 if(!this.adressByName.containsKey(((ChangeName) messageUDP).getName()))
                 {
+                    System.out.println("put :" + ((ChangeName) messageUDP).getName());
                     this.adressByName.put(((ChangeName) messageUDP).getName(), messageUDP.getAdress());
                     this.nameByAdress.put(messageUDP.getAdress(), ((ChangeName) messageUDP).getName());
                 }
