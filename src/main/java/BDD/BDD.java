@@ -75,7 +75,7 @@ public class BDD {
                     this.ListUsersConnected.remove(messageUDP.getAdress());
             }
             case ChangeName -> {
-                System.out.println("glagla");
+                System.out.println("name = " + ((ChangeName) messageUDP).getName());
                 if(!this.ListUsersConnected.contains(messageUDP.getAdress()))
                 {
                     System.out.println("put1 :" + ((ChangeName) messageUDP).getName());

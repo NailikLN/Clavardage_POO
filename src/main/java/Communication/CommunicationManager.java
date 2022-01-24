@@ -54,6 +54,7 @@ public class CommunicationManager extends Thread{
     public void Change_Name(String name) throws Exception{
         this.database.setName(name);
         ChangeName changeName = new ChangeName(this.socket.getLocalPort(), BroadcastAddr, name);
+        System.out.println("out : " + name);
         this.socket.send(changeName.to_packet());
     }
 
