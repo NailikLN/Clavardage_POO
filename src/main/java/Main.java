@@ -32,7 +32,7 @@ public class Main {
                     comm.Disconnect();
                     running = false;
                 }
-                case "/send" -> {if (cli_args.length >= 3)serverSideMessage.SendToClient(cli_args[1], cli_args[2]);}
+                case "/send" -> {if (cli_args.length >= 3)serverSideMessage.SendToClient(cli_args[1], InetAddress.getByName(cli_args[2]));}
             }
         }
     }

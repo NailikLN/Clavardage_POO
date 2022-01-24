@@ -34,6 +34,7 @@ public class ServerSideMessage extends Thread {
             ClientSide acceptedClient = null;
             try {
                 clientSocket = this.servSocket.accept();
+                System.out.println("connected \n");
 
             }
             catch (IOException e)
@@ -46,6 +47,7 @@ public class ServerSideMessage extends Thread {
             try{
                 acceptedClient = new ClientSide(clientSocket, database);
                 this.listClientAddr.put(clientSocket.getInetAddress(), acceptedClient);
+
                 acceptedClient.start();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -70,15 +72,16 @@ public class ServerSideMessage extends Thread {
 
 
     public void SendToClient(String message, InetAddress adressClient) throws IOException, SQLException {
+
         List<InetAddress> listUser = this.database.getListUsersConnected();
         if(listUser.contains(adressClient))
         {
             ClientSide client = GetClientByAdress(adressClient);
-            System.out.println("sent");
+            System.out.println("sent \n");
             client.SendMessage(message);
         }
     }
-    public void SendToClient(String message, String name) throws IOException, SQLException {
+    /*public void SendToClient(String message, String name) throws IOException, SQLException {
         Map<String, InetAddress> adressByName = this.database.getAdressByName();
         InetAddress adressClient = adressByName.get(name);
         List<InetAddress> listUser = this.database.getListUsersConnected();
@@ -88,5 +91,5 @@ public class ServerSideMessage extends Thread {
             System.out.println("sent");
             client.SendMessage(message);
         }
-    }
+    }*/
 }
