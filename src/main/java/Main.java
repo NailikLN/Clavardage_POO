@@ -33,6 +33,7 @@ public class Main {
                     running = false;
                 }
                 case "/send" -> {if (cli_args.length >= 3)serverSideMessage.SendToClient(cli_args[1], InetAddress.getByName(cli_args[2]));}
+                case "/test" -> System.out.println(database.toString());
             }
         }
     }

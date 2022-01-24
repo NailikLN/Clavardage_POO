@@ -21,6 +21,15 @@ public class BDD {
     private final Map<InetAddress, String> nameByAdress;
     private final Map<String, InetAddress> adressByName;
 
+    @Override
+    public String toString() {
+        return "BDD{" +
+                "ListUsersConnected=" + ListUsersConnected.toString() +
+                ", nameByAdress=" + nameByAdress.toString() +
+                ", adressByName=" + adressByName.toString() +
+                '}';
+    }
+
     public BDD() throws SQLException
     {
         this.database = DriverManager.getConnection("jdbc:sqlite:clavardageDB.db");
@@ -60,7 +69,7 @@ public class BDD {
                 {
                     this.ListUsersConnected.add(messageUDP.getAdress());
                 }
-                if(!this.adressByName.containsKey((ChangeName) messageUDP))
+                if(!this.adressByName.containsKey(((ChangeName) messageUDP).getName()))
                 {
                     this.adressByName.put(((ChangeName) messageUDP).getName(), messageUDP.getAdress());
                     this.nameByAdress.put(messageUDP.getAdress(), ((ChangeName) messageUDP).getName());
@@ -103,6 +112,7 @@ public class BDD {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         String strDate = dateFormat.format(date);
         prepState.setString(4, strDate);
+        prepState.executeUpdate();
 
     }
 
