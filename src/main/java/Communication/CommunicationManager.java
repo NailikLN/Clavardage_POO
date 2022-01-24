@@ -4,6 +4,7 @@ import BDD.BDD;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.*;
 
 public class CommunicationManager extends Thread{
     private InetAddress BroadcastAddr = Inet4Address.getByAddress(new byte[] {-1,-1,-1,-1});
@@ -14,12 +15,34 @@ public class CommunicationManager extends Thread{
     public CommunicationManager(int port, BDD database) throws Exception {
         this.socket = new DatagramSocket(port, Inet4Address.getByAddress(new byte[] {0,0,0,0}));
         this.socket.setBroadcast(true);
+
         this.database = database;
     }
 
     public void Connect() throws Exception{
+
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        while (interfaces.hasMoreElements())
+        {
+            NetworkInterface networkInterface = interfaces.nextElement();
+            if (networkInterface.isLoopback())
+                continue;    // Do not want to use the loopback interface.
+            for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses())
+            {
+                InetAddress broadcast = interfaceAddress.getBroadcast();
+                if (broadcast == null)
+                    continue;
+
+                this.BroadcastAddr = broadcast;
+                System.out.println(broadcast);
+            }
+        }
+
         ConnectMessage connectMessage = new ConnectMessage(this.socket.getLocalPort(), BroadcastAddr);
         this.socket.send(connectMessage.to_packet());
+        System.out.println(this.socket.getBroadcast());
+
+
     }
 
     public void Disconnect() throws Exception{
