@@ -67,7 +67,7 @@ public class CommunicationManager extends Thread{
                 exception.printStackTrace();
             }
 
-            TypeOfMessage message = TypeOfMessage.from_packet(receivedPckt);
+            TypeOfMessage message = new TypeOfMessage(receivedPckt);
             System.out.println(message.toString() + "clac");
 
             this.database.updateDatabase(message);

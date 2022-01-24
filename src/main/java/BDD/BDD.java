@@ -23,11 +23,18 @@ public class BDD {
 
     @Override
     public String toString() {
-        return "BDD{" +
-                "ListUsersConnected=" + ListUsersConnected.toString() +
-                ", nameByAdress=" + nameByAdress.toString() +
-                ", adressByName=" + adressByName.toString() +
-                '}';
+        System.out.println(ListUsersConnected.toString());
+
+        for (Map.Entry entry : nameByAdress.entrySet())
+        {
+            System.out.println("key: " + entry.getKey() + "; value: " + entry.getValue());
+        }
+
+        for (Map.Entry entry : adressByName.entrySet())
+        {
+            System.out.println("key: " + entry.getKey() + "; value: " + entry.getValue());
+        }
+        return "";
     }
 
     public BDD() throws SQLException
@@ -59,10 +66,12 @@ public class BDD {
     public void updateDatabase(TypeOfMessage messageUDP ){
         switch (messageUDP.getType()){
             case Connect -> {
-                this.ListUsersConnected.add(messageUDP.getAdress());
+                if(!ListUsersConnected.contains(messageUDP.getAdress()))
+                    this.ListUsersConnected.add(messageUDP.getAdress());
             }
             case Disconnect -> {
-                this.ListUsersConnected.remove(messageUDP.getAdress());
+                if(ListUsersConnected.contains(messageUDP.getAdress()))
+                    this.ListUsersConnected.remove(messageUDP.getAdress());
             }
             case ChangeName -> {
                 if(!this.ListUsersConnected.contains(messageUDP.getAdress()))
