@@ -16,7 +16,6 @@ public class ChangeName extends TypeOfMessage {
     public ChangeName(DatagramPacket packet) {
         super(packet);
         byte nameLength = packet.getData()[1];
-        System.out.println((int)nameLength);
         this.name = new String(packet.getData(),2,(int)nameLength, StandardCharsets.UTF_8);
 
     }

@@ -34,13 +34,11 @@ public class CommunicationManager extends Thread{
                     continue;
 
                 this.BroadcastAddr = broadcast;
-                System.out.println(broadcast + " n \n");
             }
         }
 
         ConnectMessage connectMessage = new ConnectMessage(this.socket.getLocalPort(), BroadcastAddr);
         this.socket.send(connectMessage.to_packet());
-        System.out.println(this.socket.getBroadcast() + "\n");
 
 
     }
@@ -54,7 +52,6 @@ public class CommunicationManager extends Thread{
     public void Change_Name(String name) throws Exception{
         this.database.setName(name);
         ChangeName changeName = new ChangeName(this.socket.getLocalPort(), BroadcastAddr, name);
-        System.out.println("out : " + name);
         this.socket.send(changeName.to_packet());
     }
 
@@ -69,7 +66,6 @@ public class CommunicationManager extends Thread{
             }
 
             TypeOfMessage message = TypeOfMessage.from_packet(receivedPckt);
-            System.out.println(message.toString() + "clac");
 
             this.database.updateDatabase(message);
             if(this.database.getName() != null && message.getType() == TypeOfMessage.TypeMessage.Connect)
