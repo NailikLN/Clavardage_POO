@@ -16,6 +16,7 @@ public class ChangeName extends TypeOfMessage {
     public ChangeName(DatagramPacket packet) {
         super(packet);
         byte nameLength = packet.getData()[1];
+        System.out.println((int)nameLength);
         this.name = new String(packet.getData(),2,(int)nameLength, StandardCharsets.UTF_8);
 
     }
@@ -29,7 +30,7 @@ public class ChangeName extends TypeOfMessage {
         byte buffer[] = new byte[LENGTH_BUFFER];
         buffer[0] = this.type.to_byte();
         byte[] nameBuffer = this.name.getBytes(StandardCharsets.UTF_8);
-        buffer[1] = (byte) (nameBuffer.length);
+        buffer[1] = (byte) min(nameBuffer.length,254);
         System.arraycopy(nameBuffer, 0, buffer,2, nameBuffer.length);
         DatagramPacket packet = new DatagramPacket(buffer,LENGTH_BUFFER);
         packet.setAddress(this.adress);
