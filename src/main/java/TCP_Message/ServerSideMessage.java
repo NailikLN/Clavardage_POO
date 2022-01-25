@@ -82,10 +82,9 @@ public class ServerSideMessage extends Thread {
 
     public void SendToClient(String message, InetAddress adressClient) throws IOException, SQLException {
 
-        List<InetAddress> listUser = this.database.getListUsersConnected();
-        if(listUser.contains(adressClient))
+        ClientSide client = GetClientByAdress(adressClient);
+        if(client != null)
         {
-            ClientSide client = GetClientByAdress(adressClient);
             System.out.println("sent \n");
             client.SendMessage(message);
         }
