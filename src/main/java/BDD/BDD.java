@@ -103,7 +103,7 @@ public class BDD {
     }
 
     public void putReceivedMessage(InetAddress inetAddress, MessageTCP messageReceive) throws SQLException {
-        String query = "INSERT INTO clavardageLog('user','from','content','date') VALUES(?,?,?,?)";
+        String query = "INSERT INTO clavardageLog('to','from','content','date') VALUES(?,?,?,?)";
 
         PreparedStatement prepState =  database.prepareStatement(query);
         prepState.setString(1, this.nameByAdress.get(inetAddress));
@@ -117,7 +117,7 @@ public class BDD {
 
     }
     public void putSentMessage(InetAddress inetAddress, MessageTCP messageReceive) throws SQLException {
-        String query = "INSERT INTO clavardageLog('user','from','content','date') VALUES(?,?,?,?)";
+        String query = "INSERT INTO clavardageLog('to','from','content','date') VALUES(?,?,?,?)";
 
         PreparedStatement prepState =  database.prepareStatement(query);
         prepState.setString(2, this.nameByAdress.get(inetAddress));

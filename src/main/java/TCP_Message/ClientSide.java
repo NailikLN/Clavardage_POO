@@ -20,8 +20,6 @@ public class ClientSide extends Thread{
         super("Com_IP : "+ socketClient.getInetAddress());
         this.socketClient = socketClient;
         System.out.println("debug");
-        this.inputStream = new ObjectInputStream(this.socketClient.getInputStream());
-        this.outputStream = new ObjectOutputStream(this.socketClient.getOutputStream());
         this.database = database;
     }
 
@@ -32,6 +30,7 @@ public class ClientSide extends Thread{
         {
             try
             {
+                inputStream = new ObjectInputStream(this.socketClient.getInputStream());
                 messageReceive = inputStream.readObject();
                 System.out.println("clic");
                 MessageType((TypeTCPMessage) messageReceive, messageReceive);
@@ -68,8 +67,9 @@ public class ClientSide extends Thread{
 
     public void SendMessage(String message) throws IOException, SQLException {
         MessageTCP messageTCP = new MessageTCP(message, socketClient.getInetAddress());
-        this.database.putSentMessage(this.socketClient.getInetAddress(), messageTCP);
+        outputStream = new ObjectOutputStream(this.socketClient.getOutputStream());
         this.outputStream.writeObject(messageTCP);
+        this.database.putSentMessage(this.socketClient.getInetAddress(), messageTCP);
     }
 
 
