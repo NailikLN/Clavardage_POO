@@ -17,7 +17,9 @@ public class ClientSide extends Thread{
     private BDD database;
 
     public ClientSide(Socket socketClient, BDD database) throws IOException {
+        super("Com_IP : "+ socketClient.getInetAddress());
         this.socketClient = socketClient;
+        System.out.println("debug");
         this.inputStream = new ObjectInputStream(this.socketClient.getInputStream());
         this.outputStream = new ObjectOutputStream(this.socketClient.getOutputStream());
         this.database = database;

@@ -33,7 +33,19 @@ public class Main {
                     serverSideMessage.disconnect();
                     running = false;
                 }
-                case "/send" -> {if (cli_args.length >= 3)serverSideMessage.SendToClient(cli_args[1], InetAddress.getByName(cli_args[2]));}
+                case "/send" -> {
+                    if (cli_args.length >= 3)
+                    {
+                        System.out.println("trying to send : " + cli_args[1] + "  to : " + cli_args[2]);
+                        serverSideMessage.SendToClient(cli_args[1], InetAddress.getByName(cli_args[2]));
+
+                    }
+                    else
+                    {
+                        System.out.println("wrong parameter");
+                    }
+
+                }
                 case "/test" -> System.out.println(database.toString());
             }
         }

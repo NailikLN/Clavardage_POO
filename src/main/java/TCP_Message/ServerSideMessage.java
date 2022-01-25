@@ -7,18 +7,17 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 public class ServerSideMessage extends Thread {
-    private ServerSocket servSocket;
+    private final ServerSocket servSocket;
     private boolean run = true;
     private final HashMap<InetAddress, ClientSide> listClientAddr;
-    private BDD database;
+    private final BDD database;
 
     public ServerSideMessage(int port, BDD database) throws IOException {
+        super("ServMessage");
         this.servSocket = new ServerSocket(port,2, InetAddress.getByAddress(new byte[] {0,0,0,0}));
         this.listClientAddr = new HashMap<>();
         this.database = database;
@@ -31,7 +30,7 @@ public class ServerSideMessage extends Thread {
         Socket clientSocket;
         while(run)
         {
-            ClientSide acceptedClient = null;
+            ClientSide acceptedClient;
             try {
                 clientSocket = this.servSocket.accept();
                 System.out.println("connected \n");
@@ -51,7 +50,6 @@ public class ServerSideMessage extends Thread {
                 acceptedClient.start();
             } catch (IOException e) {
                 e.printStackTrace();
-                continue;
             }
 
         }
@@ -63,15 +61,21 @@ public class ServerSideMessage extends Thread {
     }
 
     private ClientSide GetClientByAdress(InetAddress addressClient) throws IOException {
+        System.out.println("debug 2");
         if(listClientAddr.containsKey(addressClient))
         {
+            System.out.println("debug 3");
             return listClientAddr.get(addressClient);
         }
         else if(this.database.getAdressByName().containsValue(addressClient) && !listClientAddr.containsKey(addressClient))
         {
+            System.out.println("debug 4");
             Socket newClientSocket = new Socket(addressClient, this.servSocket.getLocalPort());
+            System.out.println("debug 5");
             ClientSide newClient = new ClientSide(newClientSocket, this.database);
+            System.out.println("debug 6");
             this.listClientAddr.put(addressClient, newClient);
+            System.out.println("starting client");
             newClient.start();
             return newClient;
         }
@@ -82,6 +86,7 @@ public class ServerSideMessage extends Thread {
 
     public void SendToClient(String message, InetAddress adressClient) throws IOException, SQLException {
 
+        System.out.println("debug 1");
         ClientSide client = GetClientByAdress(adressClient);
         System.out.println("rrr");
         if(client != null)
@@ -90,17 +95,6 @@ public class ServerSideMessage extends Thread {
             client.SendMessage(message);
         }
     }
-    /*  public void SendToClient(String message, String name) throws IOException, SQLException {
-        Map<String, InetAddress> adressByName = this.database.getAdressByName();
-        InetAddress adressClient = adressByName.get(name);
-        List<InetAddress> listUser = this.database.getListUsersConnected();
-        if(name != null && listUser.contains(adressClient))
-        {
-            ClientSide client = GetClientByAdress(adressClient);
-            System.out.println("sent");
-            client.SendMessage(message);
-        }
-    }  */
 
     public void disconnect()
     {
