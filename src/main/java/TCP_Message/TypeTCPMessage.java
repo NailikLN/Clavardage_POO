@@ -1,6 +1,8 @@
 package TCP_Message;
 
-public class TypeTCPMessage {
+import java.io.Serializable;
+
+public class TypeTCPMessage implements Serializable {
 
     private TypeMessage typeMessage;
 
