@@ -30,6 +30,7 @@ public class Main {
                 case "/nickname" -> comm.Change_Name(cli_args[1]);
                 case "/disconnect" -> {
                     comm.Disconnect();
+                    serverSideMessage.disconnect();
                     running = false;
                 }
                 case "/send" -> {if (cli_args.length >= 3)serverSideMessage.SendToClient(cli_args[1], InetAddress.getByName(cli_args[2]));}

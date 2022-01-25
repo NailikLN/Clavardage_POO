@@ -52,7 +52,7 @@ public class ClientSide extends Thread{
         TypeTCPMessage.TypeMessage typeMessageReceive = message.getTypeMessage();
         switch (typeMessageReceive)
         {
-            case MESSAGE -> GetMessage((MessageTCP)messageReceive);
+            case MESSAGE -> System.out.println(GetMessage((MessageTCP)messageReceive));
             case WRONG_TYPE -> {
                 System.out.println("Wrong Type");
             }

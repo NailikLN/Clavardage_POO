@@ -83,13 +83,14 @@ public class ServerSideMessage extends Thread {
     public void SendToClient(String message, InetAddress adressClient) throws IOException, SQLException {
 
         ClientSide client = GetClientByAdress(adressClient);
+        System.out.println("rrr");
         if(client != null)
         {
             System.out.println("sent \n");
             client.SendMessage(message);
         }
     }
-    /*public void SendToClient(String message, String name) throws IOException, SQLException {
+    /*  public void SendToClient(String message, String name) throws IOException, SQLException {
         Map<String, InetAddress> adressByName = this.database.getAdressByName();
         InetAddress adressClient = adressByName.get(name);
         List<InetAddress> listUser = this.database.getListUsersConnected();
@@ -99,7 +100,7 @@ public class ServerSideMessage extends Thread {
             System.out.println("sent");
             client.SendMessage(message);
         }
-    }*/
+    }  */
 
     public void disconnect()
     {
