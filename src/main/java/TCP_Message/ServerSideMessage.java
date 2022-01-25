@@ -87,17 +87,24 @@ public class ServerSideMessage extends Thread {
         System.out.println("rrr");
         if(client != null)
         {
-            System.out.println("sent \n");
-            client.SendMessage(message);
+            if(client.isAlive())
+            {
+                System.out.println("sent \n");
+                client.SendMessage(message);
+            }
+            else {
+                this.listClientAddr.remove(adressClient);
+            }
+
         }
     }
 
     public void disconnect()
     {
         this.run = false;
-        for(ClientSide Client: this.listClientAddr.values())
+        for(ClientSide client: this.listClientAddr.values())
         {
-            Client.disconnect();
+            client.disconnect();
         }
         listClientAddr.clear();
     }

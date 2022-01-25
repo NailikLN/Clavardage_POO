@@ -33,25 +33,18 @@ public class ClientSide extends Thread{
                 MessageType((TypeTCPMessage) messageReceive, messageReceive);
             } catch (SQLException | ClassNotFoundException | IOException e) {
                 e.printStackTrace();
-                try {
-                    this.socketClient.close();
-                    this.run = false;
-                    continue;
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+
+                this.run = false;
+                continue;
+
             }
         }
+
         try {
             this.socketClient.close();
         } catch (IOException e) {
             e.printStackTrace();
-            try {
-                this.socketClient.close();
 
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         }
     }
 
