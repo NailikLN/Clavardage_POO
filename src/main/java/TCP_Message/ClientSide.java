@@ -40,8 +40,11 @@ public class ClientSide extends Thread{
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-
-
+        }
+        try {
+            this.socketClient.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -68,5 +71,7 @@ public class ClientSide extends Thread{
     }
 
 
-
+    public void disconnect() {
+        this.run = false;
+    }
 }

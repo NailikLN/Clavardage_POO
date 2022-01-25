@@ -15,7 +15,7 @@ import java.util.Map;
 public class ServerSideMessage extends Thread {
     private ServerSocket servSocket;
     private boolean run = true;
-    private HashMap<InetAddress, ClientSide> listClientAddr;
+    private final HashMap<InetAddress, ClientSide> listClientAddr;
     private BDD database;
 
     public ServerSideMessage(int port, BDD database) throws IOException {
@@ -55,18 +55,27 @@ public class ServerSideMessage extends Thread {
             }
 
         }
+        try {
+            this.servSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void disconnect(){
-        this.run = false;
-    }
-
-    private ClientSide GetClientByAdress(InetAddress addressClient)
-    {
-        if(this.listClientAddr.containsKey(addressClient))
+    private ClientSide GetClientByAdress(InetAddress addressClient) throws IOException {
+        if(listClientAddr.containsKey(addressClient))
         {
             return listClientAddr.get(addressClient);
         }
+        else if(this.database.getAdressByName().containsValue(addressClient) && !listClientAddr.containsKey(addressClient))
+        {
+            Socket newClientSocket = new Socket(addressClient, this.servSocket.getLocalPort());
+            ClientSide newClient = new ClientSide(newClientSocket, this.database);
+            this.listClientAddr.put(addressClient, newClient);
+            newClient.start();
+            return newClient;
+        }
+
         return null;
     }
 
@@ -92,4 +101,14 @@ public class ServerSideMessage extends Thread {
             client.SendMessage(message);
         }
     }*/
+
+    public void disconnect()
+    {
+        this.run = false;
+        for(ClientSide Client: this.listClientAddr.values())
+        {
+            Client.disconnect();
+        }
+        listClientAddr.clear();
+    }
 }
