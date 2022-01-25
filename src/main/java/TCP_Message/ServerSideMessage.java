@@ -43,14 +43,10 @@ public class ServerSideMessage extends Thread {
             }
 
 
-            try{
-                acceptedClient = new ClientSide(clientSocket, database);
-                this.listClientAddr.put(clientSocket.getInetAddress(), acceptedClient);
+            acceptedClient = new ClientSide(clientSocket, database);
+            this.listClientAddr.put(clientSocket.getInetAddress(), acceptedClient);
 
-                acceptedClient.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            acceptedClient.start();
 
         }
         try {

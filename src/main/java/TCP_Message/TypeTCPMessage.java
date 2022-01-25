@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class TypeTCPMessage implements Serializable {
 
-    private TypeMessage typeMessage;
+    private final TypeMessage typeMessage;
 
     public TypeTCPMessage(TypeMessage typeMessage) {
         this.typeMessage = typeMessage;

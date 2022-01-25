@@ -10,13 +10,11 @@ import java.sql.SQLException;
 
 public class ClientSide extends Thread{
 
-    private Socket socketClient;
-    private ObjectOutputStream outputStream;
-    private ObjectInputStream inputStream;
+    private final Socket socketClient;
     private boolean run = true;
-    private BDD database;
+    private final BDD database;
 
-    public ClientSide(Socket socketClient, BDD database) throws IOException {
+    public ClientSide(Socket socketClient, BDD database) {
         super("Com_IP : "+ socketClient.getInetAddress());
         this.socketClient = socketClient;
         System.out.println("debug");
@@ -30,21 +28,30 @@ public class ClientSide extends Thread{
         {
             try
             {
-                inputStream = new ObjectInputStream(this.socketClient.getInputStream());
+                ObjectInputStream inputStream = new ObjectInputStream(this.socketClient.getInputStream());
                 messageReceive = inputStream.readObject();
                 MessageType((TypeTCPMessage) messageReceive, messageReceive);
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException | IOException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                try {
+                    this.socketClient.close();
+                    this.run = false;
+                    continue;
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
         try {
             this.socketClient.close();
         } catch (IOException e) {
             e.printStackTrace();
+            try {
+                this.socketClient.close();
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -53,9 +60,7 @@ public class ClientSide extends Thread{
         switch (typeMessageReceive)
         {
             case MESSAGE -> System.out.println(GetMessage((MessageTCP)messageReceive));
-            case WRONG_TYPE -> {
-                System.out.println("Wrong Type");
-            }
+            case WRONG_TYPE -> System.out.println("Wrong Type");
         }
     }
 
@@ -66,8 +71,8 @@ public class ClientSide extends Thread{
 
     public void SendMessage(String message) throws IOException, SQLException {
         MessageTCP messageTCP = new MessageTCP(message, socketClient.getInetAddress());
-        outputStream = new ObjectOutputStream(this.socketClient.getOutputStream());
-        this.outputStream.writeObject(messageTCP);
+        ObjectOutputStream outputStream = new ObjectOutputStream(this.socketClient.getOutputStream());
+        outputStream.writeObject(messageTCP);
         this.database.putSentMessage(this.socketClient.getInetAddress(), messageTCP);
     }
 

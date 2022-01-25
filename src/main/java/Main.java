@@ -46,7 +46,7 @@ public class Main {
                     }
 
                 }
-                case "/test" -> System.out.println(database.toString());
+                case "/test" -> System.out.println(database);
             }
         }
     }

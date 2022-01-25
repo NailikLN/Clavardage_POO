@@ -8,9 +8,9 @@ import java.util.*;
 
 public class CommunicationManager extends Thread{
     private InetAddress BroadcastAddr = Inet4Address.getByAddress(new byte[] {-1,-1,-1,-1});
-    private DatagramSocket socket;
+    private final DatagramSocket socket;
     private boolean disconnected = false;
-    private BDD database;
+    private final BDD database;
 
     public CommunicationManager(int port, BDD database) throws Exception {
         this.socket = new DatagramSocket(port, Inet4Address.getByAddress(new byte[] {0,0,0,0}));

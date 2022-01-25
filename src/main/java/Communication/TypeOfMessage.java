@@ -4,10 +4,10 @@ import java.net.*;
 
 public class TypeOfMessage
 {
-    protected int port;
-    protected InetAddress adress;
-    protected TypeMessage type;
-    public int LENGTH_BUFFER = 256;
+    protected final int port;
+    protected final InetAddress adress;
+    protected final TypeMessage type;
+    public final int LENGTH_BUFFER = 256;
     public enum TypeMessage
     {
         Connect,

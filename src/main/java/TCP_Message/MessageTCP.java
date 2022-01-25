@@ -4,9 +4,9 @@ import java.net.InetAddress;
 import java.util.Date;
 
 public class MessageTCP extends TypeTCPMessage{
-    private String message;
-    private Date date;
-    private InetAddress AdressDest;
+    private final String message;
+    private final Date date;
+    private final InetAddress AdressDest;
 
     public MessageTCP(String message, InetAddress inetAddress) {
         super(TypeMessage.MESSAGE);

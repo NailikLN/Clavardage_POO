@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import static java.lang.Math.min;
 
 public class ChangeName extends TypeOfMessage {
-    private String name;
+    private final String name;
 
     public ChangeName(int port, InetAddress adress, String name) {
         super(port, adress, TypeOfMessage.TypeMessage.ChangeName);
@@ -16,7 +16,7 @@ public class ChangeName extends TypeOfMessage {
     public ChangeName(DatagramPacket packet) {
         super(packet);
         byte nameLength = packet.getData()[1];
-        this.name = new String(packet.getData(),2,(int)nameLength, StandardCharsets.UTF_8);
+        this.name = new String(packet.getData(),2, nameLength, StandardCharsets.UTF_8);
 
     }
 
@@ -26,7 +26,7 @@ public class ChangeName extends TypeOfMessage {
     }
 
     public DatagramPacket to_packet(){
-        byte buffer[] = new byte[LENGTH_BUFFER];
+        byte[] buffer = new byte[LENGTH_BUFFER];
         buffer[0] = this.type.to_byte();
         byte[] nameBuffer = this.name.getBytes(StandardCharsets.UTF_8);
         buffer[1] = (byte) min(nameBuffer.length,254);
