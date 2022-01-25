@@ -94,6 +94,12 @@ public class ServerSideMessage extends Thread {
             }
             else {
                 this.listClientAddr.remove(adressClient);
+                ClientSide client2 = GetClientByAdress(adressClient);
+                if(client2 != null)
+                {
+                    System.out.println("sent \n");
+                    client2.SendMessage(message);
+                }
             }
 
         }
