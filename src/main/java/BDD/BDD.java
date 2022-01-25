@@ -2,7 +2,6 @@ package BDD;
 
 import Communication.ChangeName;
 import Communication.TypeOfMessage;
-import Communication.*;
 import TCP_Message.MessageTCP;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -46,11 +45,6 @@ public class BDD {
         this.adressByName = new HashMap<>();
     }
 
-    public void AddUser(InetAddress adress)
-    {
-        this.ListUsersConnected.add(adress);
-    }
-
     public void initDatabase() throws SQLException {
 
         Statement statement = this.database.createStatement();
@@ -86,8 +80,13 @@ public class BDD {
                     this.nameByAdress.remove(messageUDP.getAdress());
                     this.adressByName.remove(tempName);
 
+                    System.out.println("IP : " + messageUDP.getAdress() + " prends le pseudo : " + ((ChangeName) messageUDP).getName());
                     this.adressByName.put(((ChangeName) messageUDP).getName(), messageUDP.getAdress());
                     this.nameByAdress.put(messageUDP.getAdress(), ((ChangeName) messageUDP).getName());
+                }
+                else
+                {
+                    System.out.println("pseudo deja pris");
                 }
 
             }
@@ -129,14 +128,6 @@ public class BDD {
         prepState.setString(4, strDate);
         prepState.executeUpdate();
 
-    }
-
-    public List<InetAddress> getListUsersConnected() {
-        return ListUsersConnected;
-    }
-
-    public Map<InetAddress, String> getNameByAdress() {
-        return nameByAdress;
     }
 
     public Map<String, InetAddress> getAdressByName() {

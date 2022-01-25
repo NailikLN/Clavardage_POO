@@ -32,7 +32,6 @@ public class ClientSide extends Thread{
             {
                 inputStream = new ObjectInputStream(this.socketClient.getInputStream());
                 messageReceive = inputStream.readObject();
-                System.out.println("clic");
                 MessageType((TypeTCPMessage) messageReceive, messageReceive);
             } catch (SQLException e) {
                 e.printStackTrace();
