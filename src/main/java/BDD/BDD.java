@@ -3,6 +3,8 @@ package BDD;
 import Communication.ChangeName;
 import Communication.TypeOfMessage;
 import TCP_Message.MessageTCP;
+
+import javax.swing.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,9 +18,24 @@ public class BDD {
     private String name = "test";
 
     private final Connection database;
+
+
+    public List<InetAddress> getListUsersConnected() {
+        return ListUsersConnected;
+    }
+
     private final List<InetAddress> ListUsersConnected;
+
+    public Map<InetAddress, String> getNameByAdress() {
+        return nameByAdress;
+    }
+
     private final Map<InetAddress, String> nameByAdress;
     private final Map<String, InetAddress> adressByName;
+
+    public DefaultListModel displayList;
+
+
 
     @Override
     public String toString() {
@@ -42,6 +59,9 @@ public class BDD {
         this.ListUsersConnected = new ArrayList<>();
         this.nameByAdress = new HashMap<>();
         this.adressByName = new HashMap<>();
+        this.displayList = new DefaultListModel<>();
+
+
     }
 
     public void initDatabase() throws SQLException {
@@ -55,22 +75,36 @@ public class BDD {
                 + " 'date' TEXT NOT NULL);";
 
         statement.executeUpdate(query);
+
     }
 
     public void updateDatabase(TypeOfMessage messageUDP ){
         switch (messageUDP.getType()){
+
             case Connect -> {
-                if(!ListUsersConnected.contains(messageUDP.getAdress()))
+                if(!ListUsersConnected.contains(messageUDP.getAdress())){
                     this.ListUsersConnected.add(messageUDP.getAdress());
+                    String names = this.nameByAdress.get(messageUDP.getAdress());
+                    if( names != null);
+                    displayList.addElement(names);
+                }
+
             }
             case Disconnect -> {
-                if(ListUsersConnected.contains(messageUDP.getAdress()))
+                if(ListUsersConnected.contains(messageUDP.getAdress())){
                     this.ListUsersConnected.remove(messageUDP.getAdress());
+                    String names = this.nameByAdress.get(messageUDP.getAdress());
+                    if( names != null);
+                    displayList.removeElement(names);
+                }
             }
             case ChangeName -> {
                 if(!this.ListUsersConnected.contains(messageUDP.getAdress()))
                 {
                     this.ListUsersConnected.add(messageUDP.getAdress());
+                    String names = this.nameByAdress.get(messageUDP.getAdress());
+                    if( names != null);
+                    displayList.addElement(names);
                 }
 
                 if(!this.adressByName.containsKey(((ChangeName) messageUDP).getName()))
@@ -104,7 +138,7 @@ public class BDD {
         String query = "INSERT INTO clavardageLog('to','from','content','date') VALUES(?,?,?,?)";
 
         PreparedStatement prepState =  database.prepareStatement(query);
-        prepState.setString(1, this.nameByAdress.get(inetAddress));
+        prepState.setString(1, inetAddress.toString());
         prepState.setString(2, this.name);
         prepState.setString(3, messageReceive.getMessage());
         Date date = Calendar.getInstance().getTime();
@@ -118,7 +152,7 @@ public class BDD {
         String query = "INSERT INTO clavardageLog('to','from','content','date') VALUES(?,?,?,?)";
 
         PreparedStatement prepState =  database.prepareStatement(query);
-        prepState.setString(2, this.nameByAdress.get(inetAddress));
+        prepState.setString(2, inetAddress.toString());
         prepState.setString(1, this.name);
         prepState.setString(3, messageReceive.getMessage());
         Date date = Calendar.getInstance().getTime();

@@ -15,8 +15,8 @@ public class CommunicationManager extends Thread{
     public CommunicationManager(int port, BDD database) throws Exception {
         this.socket = new DatagramSocket(port, Inet4Address.getByAddress(new byte[] {0,0,0,0}));
         this.socket.setBroadcast(true);
-
         this.database = database;
+
     }
 
     public void Connect() throws Exception{
@@ -68,6 +68,7 @@ public class CommunicationManager extends Thread{
             TypeOfMessage message = TypeOfMessage.from_packet(receivedPckt);
 
             this.database.updateDatabase(message);
+
             if(this.database.getName() != null && message.getType() == TypeOfMessage.TypeMessage.Connect)
             {
                 ChangeName changeNameMessage = new ChangeName(message.getPort(), message.getAdress(), this.database.getName());

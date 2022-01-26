@@ -2,22 +2,25 @@ import Communication.CommunicationManager;
 import TCP_Message.ServerSideMessage;
 import BDD.BDD;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 
 public class Main {
+
+    private static boolean isLogged = false ;
+    private static String nickname = "";
+
     public static void main(String[] args) throws Exception{
-        BDD database = new BDD();
-        database.initDatabase();
+
+        App app = new App();
+        app.run();
 
 
-        CommunicationManager comm = new CommunicationManager(1250, database);
-        ServerSideMessage serverSideMessage = new ServerSideMessage(1250, database);
-        comm.start();
-        serverSideMessage.start();
 
-        boolean running = true ;
+
+        /* boolean running = true ;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String command;
         String[] cli_args;
@@ -48,8 +51,6 @@ public class Main {
                 }
                 case "/test" -> System.out.println(database);
             }
-        }
+        }*/
     }
-
-
 }
