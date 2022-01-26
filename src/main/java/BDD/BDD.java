@@ -161,6 +161,54 @@ public class BDD {
 
     }
 
+    public ArrayList<MessageHist> getHistoryOfUser(String user){
+        ArrayList<MessageHist> messages = new ArrayList<>();
+        InetAddress UserIP = this.adressByName.get(user);
+
+        String query = "SELECT * FROM history "
+                + "WHERE from = ? OR to = ? ;";
+
+        try {
+            PreparedStatement statement = this.database.prepareStatement(query);
+            statement.setString(1, UserIP.toString());
+            statement.setString(2, UserIP.toString());
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()){
+                if (result.getString("from") == "Client")
+                {
+                    messages.add(new MessageHist(result.getString("content"),this.name,result.getString("date")));
+                }
+                else if(result.getString("to") == "Client")
+                {
+                    messages.add(new MessageHist(result.getString("content"),result.getString("from"),result.getString("date")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return messages;
+    }
+
+    public ArrayList<String> MessageHistToString (String user){
+        ArrayList<MessageHist> messages = new ArrayList<MessageHist>();
+        messages = getHistoryOfUser(user);
+        Collections.sort(messages);
+
+        ArrayList<String> FinalText = new ArrayList<>();
+
+        for(MessageHist message : messages)
+        {
+            String Text = message.getUserFrom() + " at " + message.getDate() + "\n" +  message.getMessage() + "\n";
+            FinalText.add(Text);
+        }
+
+        return FinalText;
+    }
+
+
+
     public Map<String, InetAddress> getAdressByName() {
         return adressByName;
     }

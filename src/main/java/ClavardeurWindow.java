@@ -9,9 +9,11 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ClavardeurWindow extends JFrame {
 
+    private BDD database;
     private JPanel MainClavardeur;
     private JTextField messageField;
     private JList<String> listUser;
@@ -30,7 +32,7 @@ public class ClavardeurWindow extends JFrame {
 
         this.setContentPane(MainClavardeur);
 
-
+        this.database = database;
 
 
 
@@ -90,8 +92,9 @@ public class ClavardeurWindow extends JFrame {
                 {
                     System.out.println("wrong destination");
                 }
-
+                updateMessage();
             }
+
         });
 
         this.pack();
@@ -100,13 +103,21 @@ public class ClavardeurWindow extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 selected = listUser.getSelectedValue();
+                updateMessage();
             }
         });
     }
 
-    public void updateList()
+    public void updateMessage()
     {
-
+        if(database.getNameByAdress().containsValue(selected))
+        {
+            historyChat.setText("");
+            for(String text :database.MessageHistToString(selected))
+            {
+                historyChat.append(text);
+            }
+        }
     }
 
 

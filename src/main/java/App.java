@@ -5,6 +5,7 @@ import TCP_Message.ServerSideMessage;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class App {
     private BDD database;
@@ -28,6 +29,15 @@ public class App {
 
         comm.start();
         serverSideMessage.start();
+        while (true)
+        {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            loginFrame.updateMessage();
+        }
     }
 
     public void sendMessage(String message, InetAddress adress) throws SQLException, IOException {
@@ -64,4 +74,6 @@ public class App {
     public boolean isConnected() {
         return isConnected;
     }
+
+
 }

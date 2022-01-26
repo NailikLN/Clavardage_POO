@@ -40,15 +40,12 @@ public class CommunicationManager extends Thread{
         }
 
         ConnectMessage connectMessage = new ConnectMessage(this.socket.getLocalPort(), BroadcastAddr);
-        //this.isConnected = true;
         this.socket.send(connectMessage.to_packet());
-        System.out.println("connected");
     }
 
     public void Disconnect() throws Exception{
         DisconnectMessage disconnectMessage = new DisconnectMessage(this.socket.getLocalPort(), BroadcastAddr);
         this.socket.send(disconnectMessage.to_packet());
-        //this.isConnected = false;
     }
 
     public void Change_Name(String name) throws Exception{
@@ -62,7 +59,6 @@ public class CommunicationManager extends Thread{
         while(this.run){
             byte[] buffer = new byte[256];
             if(this.isConnected) {
-                System.out.println("listening");
                 DatagramPacket receivedPckt = new DatagramPacket(buffer, buffer.length);
                 try {
                     socket.receive(receivedPckt);
@@ -75,9 +71,7 @@ public class CommunicationManager extends Thread{
                 this.database.updateDatabase(message);
 
                 if (this.database.getName() != null && message.getType() == TypeOfMessage.TypeMessage.Connect) {
-                    System.out.println("connection");
                     ChangeName changeNameMessage = new ChangeName(message.getPort(), message.getAdress(), this.database.getName());
-                    System.out.println("send to :" + message.getAdress());
                     try {
                         this.socket.send(changeNameMessage.to_packet());
                     } catch (IOException e) {
