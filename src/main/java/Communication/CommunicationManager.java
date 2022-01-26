@@ -9,7 +9,8 @@ import java.util.*;
 public class CommunicationManager extends Thread{
     private InetAddress BroadcastAddr = Inet4Address.getByAddress(new byte[] {-1,-1,-1,-1});
     private final DatagramSocket socket;
-    private boolean disconnected = false;
+    private boolean disconnected = true;
+    private boolean run = true;
     private final BDD database;
 
     public CommunicationManager(int port, BDD database) throws Exception {
@@ -39,6 +40,7 @@ public class CommunicationManager extends Thread{
 
         ConnectMessage connectMessage = new ConnectMessage(this.socket.getLocalPort(), BroadcastAddr);
         this.socket.send(connectMessage.to_packet());
+        this.disconnected = false;
 
 
     }
@@ -57,28 +59,28 @@ public class CommunicationManager extends Thread{
 
     public void run(){
         byte[] buffer = new byte[256];
-        while(!this.disconnected){
-            DatagramPacket receivedPckt = new DatagramPacket(buffer, buffer.length);
-            try{
-                socket.receive(receivedPckt);
-            }catch (IOException exception){
-                exception.printStackTrace();
-            }
-
-            TypeOfMessage message = TypeOfMessage.from_packet(receivedPckt);
-
-            this.database.updateDatabase(message);
-
-            if(this.database.getName() != null && message.getType() == TypeOfMessage.TypeMessage.Connect)
-            {
-                ChangeName changeNameMessage = new ChangeName(message.getPort(), message.getAdress(), this.database.getName());
+        while(this.run){
+            while(!this.disconnected) {
+                DatagramPacket receivedPckt = new DatagramPacket(buffer, buffer.length);
                 try {
-                    this.socket.send(changeNameMessage.to_packet());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    socket.receive(receivedPckt);
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+
+                TypeOfMessage message = TypeOfMessage.from_packet(receivedPckt);
+
+                this.database.updateDatabase(message);
+
+                if (this.database.getName() != null && message.getType() == TypeOfMessage.TypeMessage.Connect) {
+                    ChangeName changeNameMessage = new ChangeName(message.getPort(), message.getAdress(), this.database.getName());
+                    try {
+                        this.socket.send(changeNameMessage.to_packet());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-
         }
         this.socket.close();
     }

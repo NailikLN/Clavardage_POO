@@ -59,4 +59,8 @@ public class App {
         }
 
     }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
 }
