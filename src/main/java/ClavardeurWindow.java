@@ -99,7 +99,7 @@ public class ClavardeurWindow extends JFrame {
         listUser.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                selected = (String) e.getSource();
+                selected = listUser.getSelectedValue();
             }
         });
     }

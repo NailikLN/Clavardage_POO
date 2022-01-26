@@ -84,9 +84,6 @@ public class BDD {
             case Connect -> {
                 if(!ListUsersConnected.contains(messageUDP.getAdress())){
                     this.ListUsersConnected.add(messageUDP.getAdress());
-                    String names = this.nameByAdress.get(messageUDP.getAdress());
-                    if( names != null);
-                    displayList.addElement(names);
                 }
 
             }
@@ -102,9 +99,6 @@ public class BDD {
                 if(!this.ListUsersConnected.contains(messageUDP.getAdress()))
                 {
                     this.ListUsersConnected.add(messageUDP.getAdress());
-                    String names = this.nameByAdress.get(messageUDP.getAdress());
-                    if( names != null);
-                    displayList.addElement(names);
                 }
 
                 if(!this.adressByName.containsKey(((ChangeName) messageUDP).getName()))
@@ -112,10 +106,14 @@ public class BDD {
                     String tempName = this.nameByAdress.get(messageUDP.getAdress());
                     this.nameByAdress.remove(messageUDP.getAdress());
                     this.adressByName.remove(tempName);
+                    displayList.removeElement(tempName);
 
                     System.out.println("IP : " + messageUDP.getAdress() + " prends le pseudo : " + ((ChangeName) messageUDP).getName());
                     this.adressByName.put(((ChangeName) messageUDP).getName(), messageUDP.getAdress());
                     this.nameByAdress.put(messageUDP.getAdress(), ((ChangeName) messageUDP).getName());
+
+                    if(ListUsersConnected.contains(messageUDP.getAdress()))
+                        displayList.addElement(((ChangeName) messageUDP).getName());
                 }
                 else
                 {
@@ -139,7 +137,7 @@ public class BDD {
 
         PreparedStatement prepState =  database.prepareStatement(query);
         prepState.setString(1, inetAddress.toString());
-        prepState.setString(2, this.name);
+        prepState.setString(2, "Client");
         prepState.setString(3, messageReceive.getMessage());
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -153,7 +151,7 @@ public class BDD {
 
         PreparedStatement prepState =  database.prepareStatement(query);
         prepState.setString(2, inetAddress.toString());
-        prepState.setString(1, this.name);
+        prepState.setString(1, "Client");
         prepState.setString(3, messageReceive.getMessage());
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

@@ -36,11 +36,11 @@ public class App {
 
     public void connect(String nickname) throws Exception {
 
-
+        database.setName(nickname);
         if(!isConnected)
         {
-            database.setName(nickname);
             comm.Connect();
+            comm.Change_Name(nickname);
             isConnected = true;
         }
         else
