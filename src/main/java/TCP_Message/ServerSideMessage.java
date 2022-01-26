@@ -57,21 +57,16 @@ public class ServerSideMessage extends Thread {
     }
 
     private ClientSide GetClientByAdress(InetAddress addressClient) throws IOException {
-        System.out.println("debug 2");
+
         if(listClientAddr.containsKey(addressClient))
         {
-            System.out.println("debug 3");
             return listClientAddr.get(addressClient);
         }
         else if(this.database.getAdressByName().containsValue(addressClient) && !listClientAddr.containsKey(addressClient))
         {
-            System.out.println("debug 4");
             Socket newClientSocket = new Socket(addressClient, this.servSocket.getLocalPort());
-            System.out.println("debug 5");
             ClientSide newClient = new ClientSide(newClientSocket, this.database);
-            System.out.println("debug 6");
             this.listClientAddr.put(addressClient, newClient);
-            System.out.println("starting client");
             newClient.start();
             return newClient;
         }
@@ -82,14 +77,11 @@ public class ServerSideMessage extends Thread {
 
     public void SendToClient(String message, InetAddress adressClient) throws IOException, SQLException {
 
-        System.out.println("debug 1");
         ClientSide client = GetClientByAdress(adressClient);
-        System.out.println("rrr");
         if(client != null)
         {
             if(client.isAlive())
             {
-                System.out.println("sent \n");
                 client.SendMessage(message);
             }
             else {
@@ -97,7 +89,6 @@ public class ServerSideMessage extends Thread {
                 ClientSide client2 = GetClientByAdress(adressClient);
                 if(client2 != null)
                 {
-                    System.out.println("sent \n");
                     client2.SendMessage(message);
                 }
             }

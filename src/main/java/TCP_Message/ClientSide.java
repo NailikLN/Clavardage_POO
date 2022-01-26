@@ -17,7 +17,6 @@ public class ClientSide extends Thread{
     public ClientSide(Socket socketClient, BDD database) {
         super("Com_IP : "+ socketClient.getInetAddress());
         this.socketClient = socketClient;
-        System.out.println("debug");
         this.database = database;
     }
 

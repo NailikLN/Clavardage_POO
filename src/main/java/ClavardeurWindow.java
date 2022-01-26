@@ -113,8 +113,10 @@ public class ClavardeurWindow extends JFrame {
         if(database.getNameByAdress().containsValue(selected))
         {
             historyChat.setText("");
+            System.out.print("trying to print");
             for(String text :database.MessageHistToString(selected))
             {
+                System.out.print(text);
                 historyChat.append(text);
             }
         }

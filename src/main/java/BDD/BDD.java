@@ -136,8 +136,8 @@ public class BDD {
         String query = "INSERT INTO clavardageLog('to','from','content','date') VALUES(?,?,?,?)";
 
         PreparedStatement prepState =  database.prepareStatement(query);
-        prepState.setString(1, inetAddress.toString());
-        prepState.setString(2, "Client");
+        prepState.setString(2, inetAddress.toString());
+        prepState.setString(1, "Client");
         prepState.setString(3, messageReceive.getMessage());
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -150,8 +150,8 @@ public class BDD {
         String query = "INSERT INTO clavardageLog('to','from','content','date') VALUES(?,?,?,?)";
 
         PreparedStatement prepState =  database.prepareStatement(query);
-        prepState.setString(2, inetAddress.toString());
-        prepState.setString(1, "Client");
+        prepState.setString(1, inetAddress.toString());
+        prepState.setString(2, "Client");
         prepState.setString(3, messageReceive.getMessage());
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -165,8 +165,8 @@ public class BDD {
         ArrayList<MessageHist> messages = new ArrayList<>();
         InetAddress UserIP = this.adressByName.get(user);
 
-        String query = "SELECT * FROM history "
-                + "WHERE from = ? OR to = ? ;";
+        String query = "SELECT * FROM clavardageLog "
+                + "WHERE `from` = ? OR `to` = ? ;";
 
         try {
             PreparedStatement statement = this.database.prepareStatement(query);
@@ -175,15 +175,23 @@ public class BDD {
             ResultSet result = statement.executeQuery();
 
             while (result.next()){
-                if (result.getString("from") == "Client")
+
+                if (result.getString("from").equals("Client"))
                 {
+                    System.out.println(result.getString("content"));
                     messages.add(new MessageHist(result.getString("content"),this.name,result.getString("date")));
                 }
-                else if(result.getString("to") == "Client")
+                else if(result.getString("to").equals("Client"))
                 {
-                    messages.add(new MessageHist(result.getString("content"),result.getString("from"),result.getString("date")));
+                    System.out.println(result.getString("content"));
+                    String nameUser = this.nameByAdress.get(result.getString("from"));
+                    if(nameUser == null)
+                        nameUser = result.getString("from");
+                    messages.add(new MessageHist(result.getString("content"),nameUser,result.getString("date")));
                 }
             }
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -200,7 +208,9 @@ public class BDD {
 
         for(MessageHist message : messages)
         {
+
             String Text = message.getUserFrom() + " at " + message.getDate() + "\n" +  message.getMessage() + "\n";
+
             FinalText.add(Text);
         }
 
