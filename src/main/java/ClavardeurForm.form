@@ -122,11 +122,9 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="84c2a" class="javax.swing.JTextArea" binding="historyChat">
+          <component id="e9cb2" class="javax.swing.JTextPane" binding="historyChat">
             <constraints/>
-            <properties>
-              <editable value="false"/>
-            </properties>
+            <properties/>
           </component>
         </children>
       </scrollpane>

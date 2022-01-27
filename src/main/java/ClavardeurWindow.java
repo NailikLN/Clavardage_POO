@@ -3,6 +3,11 @@ import BDD.BDD;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -17,12 +22,15 @@ public class ClavardeurWindow extends JFrame {
     private JPanel MainClavardeur;
     private JTextField messageField;
     private JList<String> listUser;
-    private JTextArea historyChat;
+    private JTextPane historyChat;
     private JTextField enterNicknameTextField;
     private JButton connectButton;
     private JButton disconnectButton;
     private JButton sendButton;
     private String selected = "";
+    private Boolean Changed = false;
+    private ArrayList<String> Temptext;
+    private String previousUsername = null;
 
     public ClavardeurWindow(BDD database, App app) {
         super("LoginScreen");
@@ -33,6 +41,7 @@ public class ClavardeurWindow extends JFrame {
         this.setContentPane(MainClavardeur);
 
         this.database = database;
+        this.Temptext = new ArrayList<>();
 
 
 
@@ -92,7 +101,6 @@ public class ClavardeurWindow extends JFrame {
                 {
                     System.out.println("wrong destination");
                 }
-                updateMessage();
             }
 
         });
@@ -103,21 +111,78 @@ public class ClavardeurWindow extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 selected = listUser.getSelectedValue();
-                updateMessage();
+                Changed = true;
+                System.out.println("changed");
             }
         });
+    }
+
+    private void appendToPane(JTextPane tp, String msg, Color c)
+    {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+        int len = tp.getDocument().getLength();
+        tp.setCaretPosition(len);
+        tp.setCharacterAttributes(aset, false);
+        tp.replaceSelection(msg);
     }
 
     public void updateMessage()
     {
         if(database.getNameByAdress().containsValue(selected))
         {
-            historyChat.setText("");
-            System.out.print("trying to print");
-            for(String text :database.MessageHistToString(selected))
+            if(Changed) {
+                historyChat.setText("");
+                Temptext = new ArrayList<>();
+                Changed = false;
+                previousUsername = null;
+            }
+            int i = 0;
+            for(String text : database.MessageHistToString(selected))
             {
-                System.out.print(text);
-                historyChat.append(text);
+                Boolean show = true;
+                Boolean Colored = false;
+
+
+                if(i >= Temptext.size() || !Temptext.get(i).equals(text) )
+                {
+                    if(i%2 == 0)
+                    {
+                        Colored = true;
+                        String currentUsername = "";
+                        currentUsername = text.split(" ")[0];
+                        System.out.println(currentUsername + " / " + previousUsername);
+                        if(currentUsername.equals(previousUsername))
+                        {
+
+                            show = false;
+
+                        }
+                        else
+                        {
+                            previousUsername = currentUsername;
+                        }
+                    }
+
+                    if(show)
+                        if(Colored)
+                        {
+                            appendToPane(historyChat,"\n",Color.red);
+                            appendToPane(historyChat,text,Color.red);
+                            appendToPane(historyChat,"\n",Color.red);
+                        }
+                        else
+                            appendToPane(historyChat,text,Color.black);
+                    else
+                        System.out.println("nop");
+
+                    Temptext.add(text);
+                }
+                i++;
             }
         }
     }

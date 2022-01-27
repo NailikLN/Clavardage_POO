@@ -5,6 +5,7 @@ import Communication.TypeOfMessage;
 import TCP_Message.MessageTCP;
 
 import javax.swing.*;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -178,13 +179,11 @@ public class BDD {
 
                 if (result.getString("from").equals("Client"))
                 {
-                    System.out.println(result.getString("content"));
                     messages.add(new MessageHist(result.getString("content"),this.name,result.getString("date")));
                 }
                 else if(result.getString("to").equals("Client"))
                 {
-                    System.out.println(result.getString("content"));
-                    String nameUser = this.nameByAdress.get(result.getString("from"));
+                    String nameUser = this.nameByAdress.get( InetAddress.getByName(result.getString("from").substring(1)) );
                     if(nameUser == null)
                         nameUser = result.getString("from");
                     messages.add(new MessageHist(result.getString("content"),nameUser,result.getString("date")));
@@ -192,7 +191,7 @@ public class BDD {
             }
 
 
-        } catch (SQLException e) {
+        } catch (SQLException | UnknownHostException e) {
             e.printStackTrace();
         }
 
@@ -209,9 +208,11 @@ public class BDD {
         for(MessageHist message : messages)
         {
 
-            String Text = message.getUserFrom() + " at " + message.getDate() + "\n" +  message.getMessage() + "\n";
+            String Text = message.getUserFrom() + " at " + message.getDate() + "\n";
+            String Text2 =  message.getMessage() + "\n";
 
             FinalText.add(Text);
+            FinalText.add(Text2);
         }
 
         return FinalText;
