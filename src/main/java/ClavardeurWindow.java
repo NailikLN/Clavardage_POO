@@ -92,6 +92,19 @@ public class ClavardeurWindow extends JFrame {
             selected = listUser.getSelectedValue();
             Changed = true;
         });
+
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                try {
+                    app.disconnect();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                System.exit(0);
+
+            }
+        });
     }
 
     private void appendToPane(JTextPane tp, String msg, Color c) {
