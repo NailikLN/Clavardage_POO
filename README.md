@@ -34,3 +34,5 @@ Quand une autre personne se connecte son pseudo va s’afficher a gauche. Si vou
 Pour envoyer un message sélectionné le destinataire sur la liste de gauche et écrivez votre message dans la barre de texte en bas a droite et cliquez « send »
 
 Quand vous avez finis cliquez sur « Disconnect » ou fermez l’application.
+
+(lien jira: https://lenezet.atlassian.net/jira/software/projects/CLAV/boards/1 )
