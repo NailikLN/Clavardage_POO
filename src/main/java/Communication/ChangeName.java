@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import static java.lang.Math.min;
 
+
 public class ChangeName extends TypeOfMessage {
     private final String name;
 

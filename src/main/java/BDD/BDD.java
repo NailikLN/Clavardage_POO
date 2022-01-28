@@ -4,14 +4,14 @@ import Communication.ChangeName;
 import Communication.TypeOfMessage;
 import TCP_Message.MessageTCP;
 
+
 import javax.swing.*;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import java.net.InetAddress;
-import java.sql.*;
 import java.util.*;
 
 public class BDD {

@@ -2,6 +2,7 @@ package TCP_Message;
 
 import java.io.Serializable;
 
+
 public class TypeTCPMessage implements Serializable {
 
     private final TypeMessage typeMessage;

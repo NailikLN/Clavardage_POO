@@ -3,6 +3,7 @@ package Communication;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 
+
 public class DisconnectMessage extends TypeOfMessage {
 
     public DisconnectMessage(int port, InetAddress adress) {

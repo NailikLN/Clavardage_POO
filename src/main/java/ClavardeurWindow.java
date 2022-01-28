@@ -36,9 +36,12 @@ public class ClavardeurWindow extends JFrame {
         super("LoginScreen");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        this.setContentPane(MainClavardeur);
+
+        listUser = new JList<>();
         listUser.setModel(database.displayList);
 
-        this.setContentPane(MainClavardeur);
+
 
         this.database = database;
         this.Temptext = new ArrayList<>();

@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.SQLException;
 
+
 public class ClientSide extends Thread{
 
     private final Socket socketClient;

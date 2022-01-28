@@ -2,6 +2,7 @@ package Communication;
 
 import java.net.*;
 
+
 public class TypeOfMessage
 {
     protected final int port;

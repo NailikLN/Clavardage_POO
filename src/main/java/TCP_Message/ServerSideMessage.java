@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 
+
 public class ServerSideMessage extends Thread {
     private final ServerSocket servSocket;
     private boolean run = true;

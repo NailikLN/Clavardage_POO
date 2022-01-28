@@ -1,12 +1,3 @@
-import Communication.CommunicationManager;
-import TCP_Message.ServerSideMessage;
-import BDD.BDD;
-
-import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
-
 public class Main {
 
     private static boolean isLogged = false ;

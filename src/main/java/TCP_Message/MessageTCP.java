@@ -3,6 +3,7 @@ package TCP_Message;
 import java.net.InetAddress;
 import java.util.Date;
 
+
 public class MessageTCP extends TypeTCPMessage{
     private final String message;
     private final Date date;

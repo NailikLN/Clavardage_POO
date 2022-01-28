@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.*;
 import java.util.*;
 
+
 public class CommunicationManager extends Thread{
     private InetAddress BroadcastAddr = Inet4Address.getByAddress(new byte[] {-1,-1,-1,-1});
     private final DatagramSocket socket;
