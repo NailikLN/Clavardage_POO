@@ -4,7 +4,6 @@ import Communication.ChangeName;
 import Communication.TypeOfMessage;
 import TCP_Message.MessageTCP;
 
-
 import javax.swing.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -130,8 +129,6 @@ public class BDD {
     }
 
     public void setName(String name) {
-        displayList.removeElement(this.name);
-        displayList.addElement(name);
         this.name = name;
     }
 
