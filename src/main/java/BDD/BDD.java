@@ -130,6 +130,8 @@ public class BDD {
     }
 
     public void setName(String name) {
+        displayList.removeElement(this.name);
+        displayList.addElement(name);
         this.name = name;
     }
 

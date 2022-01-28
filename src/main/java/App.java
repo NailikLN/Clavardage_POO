@@ -16,6 +16,7 @@ public class App {
     private boolean isConnected = false;
 
     public App() throws Exception {
+
         database = new BDD();
         database.initDatabase();
         loginFrame = new ClavardeurWindow(database, this);
