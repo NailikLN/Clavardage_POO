@@ -47,6 +47,7 @@ public class CommunicationManager extends Thread{
     public void Disconnect() throws Exception{
         DisconnectMessage disconnectMessage = new DisconnectMessage(this.socket.getLocalPort(), BroadcastAddr);
         this.socket.send(disconnectMessage.to_packet());
+        run = false;
     }
 
     public void Change_Name(String name) throws Exception{

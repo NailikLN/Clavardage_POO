@@ -1,16 +1,14 @@
 package BDD;
 
 
-import java.util.Comparator;
-
 public class MessageHist implements Comparable<MessageHist>
 {
 
 
 
-    private String message;
-    private String userFrom;
-    private String date;
+    private final String message;
+    private final String userFrom;
+    private final String date;
 
 
     public MessageHist(String message, String userFrom, String date) {
@@ -30,11 +28,6 @@ public class MessageHist implements Comparable<MessageHist>
     public String getDate() {
         return date;
     }
-
-    /*@Override
-    public int compare(MessageHist o,MessageHist o2) {
-        return CharSequence.compare(o.getDate(),o2.getDate());
-    }*/
 
     @Override
     public int compareTo(MessageHist o) {

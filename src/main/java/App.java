@@ -5,19 +5,18 @@ import TCP_Message.ServerSideMessage;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 
 public class App {
-    private BDD database;
     private static ClavardeurWindow loginFrame;
-    private CommunicationManager comm;
-    private ServerSideMessage serverSideMessage;
+    private final CommunicationManager comm;
+    private final ServerSideMessage serverSideMessage;
     private boolean isConnected = false;
+    private boolean run = true;
 
     public App() throws Exception {
 
-        database = new BDD();
+        BDD database = new BDD();
         database.initDatabase();
         loginFrame = new ClavardeurWindow(database, this);
         comm = new CommunicationManager(1250, database);
@@ -31,7 +30,7 @@ public class App {
 
         comm.start();
         serverSideMessage.start();
-        while (true)
+        while (run)
         {
             try {
                 Thread.sleep(500);
@@ -69,13 +68,8 @@ public class App {
             comm.Disconnect();
             serverSideMessage.disconnect();
             isConnected = false;
+            run = false;
         }
 
     }
-
-    public boolean isConnected() {
-        return isConnected;
-    }
-
-
 }

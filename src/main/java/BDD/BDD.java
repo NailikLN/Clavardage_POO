@@ -16,23 +16,13 @@ import java.util.*;
 public class BDD {
 
     private String name = "test";
-
     private final Connection database;
-
-
-    public List<InetAddress> getListUsersConnected() {
-        return ListUsersConnected;
-    }
-
     private final List<InetAddress> ListUsersConnected;
-
     public Map<InetAddress, String> getNameByAdress() {
         return nameByAdress;
     }
-
     private final Map<InetAddress, String> nameByAdress;
     private final Map<String, InetAddress> adressByName;
-
     public DefaultListModel displayList;
 
 
@@ -91,7 +81,6 @@ public class BDD {
                 if(ListUsersConnected.contains(messageUDP.getAdress())){
                     this.ListUsersConnected.remove(messageUDP.getAdress());
                     String names = this.nameByAdress.get(messageUDP.getAdress());
-                    if( names != null);
                     displayList.removeElement(names);
                 }
             }
@@ -114,10 +103,6 @@ public class BDD {
 
                     if(ListUsersConnected.contains(messageUDP.getAdress()))
                         displayList.addElement(((ChangeName) messageUDP).getName());
-                }
-                else
-                {
-                    System.out.println("pseudo deja pris");
                 }
 
             }
@@ -198,7 +183,7 @@ public class BDD {
     }
 
     public ArrayList<String> MessageHistToString (String user){
-        ArrayList<MessageHist> messages = new ArrayList<MessageHist>();
+        ArrayList<MessageHist> messages;
         messages = getHistoryOfUser(user);
         Collections.sort(messages);
 
@@ -207,8 +192,8 @@ public class BDD {
         for(MessageHist message : messages)
         {
 
-            String Text = message.getUserFrom() + " at " + message.getDate() + "\n";
-            String Text2 =  message.getMessage() + "\n";
+            String Text = message.getUserFrom() + " at " + message.getDate();
+            String Text2 =  message.getMessage();
 
             FinalText.add(Text);
             FinalText.add(Text2);

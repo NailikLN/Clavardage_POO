@@ -5,24 +5,19 @@ import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ClavardeurWindow extends JFrame {
 
-    private BDD database;
+    private final BDD database;
     private JPanel MainClavardeur;
     private JTextField messageField;
     private JList<String> listUser;
@@ -35,6 +30,7 @@ public class ClavardeurWindow extends JFrame {
     private Boolean Changed = false;
     private ArrayList<String> Temptext;
     private String previousUsername = null;
+    private String Date = null;
 
     public ClavardeurWindow(BDD database, App app) {
         super("LoginScreen");
@@ -50,71 +46,51 @@ public class ClavardeurWindow extends JFrame {
         this.Temptext = new ArrayList<>();
 
 
-        connectButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        connectButton.addActionListener(e -> {
 
-                String nickname = enterNicknameTextField.getText();
-                enterNicknameTextField.setText("");
-                connectButton.setText("Change Nickname");
-                if (!database.getAdressByName().containsValue(nickname)) {
-                    try {
-                        app.connect(nickname);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                } else {
-                    System.out.println("nickname already used");
-                }
-            }
-        });
-
-
-        disconnectButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+            String nickname = enterNicknameTextField.getText();
+            enterNicknameTextField.setText("");
+            connectButton.setText("Change Nickname");
+            if (!database.getAdressByName().containsValue(nickname)) {
                 try {
-                    app.disconnect();
-                    connectButton.setText("Connect");
+                    app.connect(nickname);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-
             }
         });
 
-        sendButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                String message = messageField.getText();
-                messageField.setText("");
-                InetAddress adress = database.getAdressByName().get(selected);
-                if (adress != null) {
-                    try {
-                        app.sendMessage(message, adress);
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                } else {
-                    System.out.println("wrong destination");
-                }
+        disconnectButton.addActionListener(e -> {
+
+            try {
+                app.disconnect();
+                connectButton.setText("Connect");
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
 
+        });
+
+        sendButton.addActionListener(e -> {
+
+            String message = messageField.getText();
+            messageField.setText("");
+            InetAddress adress = database.getAdressByName().get(selected);
+            if (adress != null) {
+                try {
+                    app.sendMessage(message, adress);
+                } catch (SQLException | IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
         });
 
         this.pack();
 
-        listUser.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                selected = listUser.getSelectedValue();
-                Changed = true;
-                System.out.println("changed");
-            }
+        listUser.addListSelectionListener(e -> {
+            selected = listUser.getSelectedValue();
+            Changed = true;
         });
     }
 
@@ -141,16 +117,17 @@ public class ClavardeurWindow extends JFrame {
             }
             int i = 0;
             for (String text : database.MessageHistToString(selected)) {
-                Boolean show = true;
-                Boolean Colored = false;
+                boolean show = true;
+                boolean Colored = false;
+
 
 
                 if (i >= Temptext.size() || !Temptext.get(i).equals(text)) {
                     if (i % 2 == 0) {
                         Colored = true;
-                        String currentUsername = "";
+                        String currentUsername;
                         currentUsername = text.split(" ")[0];
-                        System.out.println(currentUsername + " / " + previousUsername);
+                        Date = text.split(" ")[3];
                         if (currentUsername.equals(previousUsername)) {
 
                             show = false;
@@ -165,11 +142,10 @@ public class ClavardeurWindow extends JFrame {
                             appendToPane(historyChat, "\n", Color.red);
                             appendToPane(historyChat, text, Color.red);
                             appendToPane(historyChat, "\n", Color.red);
-                        } else
+                        } else {
                             appendToPane(historyChat, text, Color.black);
-                    else
-                        System.out.println("nop");
-
+                            appendToPane(historyChat, "   @ " + Date + "\n", Color.lightGray);
+                        }
                     Temptext.add(text);
                 }
                 i++;
