@@ -1,0 +1,55 @@
+# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
+# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+
+name: Maven Package
+
+on: [push]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: "github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release]')
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'adopt'
+        cache: maven
+
+    - name: Build with Maven
+      run: mvn assembly:assembly --file pom.xml
+      
+    - name: Extract Maven project version
+      run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+      id: project
+      
+    - name: Show extracted Maven project version
+      run: echo ${{ steps.project.outputs.version }}
+
+    - name: Create a GitHub release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.project.outputs.version }}-release
+        release_name: Release ${{ steps.project.outputs.version }}
+        prerelease: false
+        draft: false
+        body: "new version of clavaradage (${{ steps.project.outputs.version }}, ${{ steps.date.outputs.date }})!"
+    
+    - name: Upload release asset to GitHub
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} 
+        asset_path: ./target/Project_Poo-${{ steps.project.outputs.version }}-jar-with-dependencies.jar
+        asset_name: release.jar
+        asset_content_type: application/jar
+
+
