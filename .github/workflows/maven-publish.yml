@@ -39,7 +39,7 @@ jobs:
         release_name: Release ${{ steps.project.outputs.version }}
         prerelease: false
         draft: false
-        body: "new version of clavaradage (${{ steps.project.outputs.version }}, ${{ steps.date.outputs.date }})!"
+        body: "new version of clavaradage : ${{ steps.project.outputs.version }}"
     
     - name: Upload release asset to GitHub
       id: upload-release-asset 
