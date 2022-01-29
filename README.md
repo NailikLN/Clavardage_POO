@@ -11,7 +11,7 @@ Ensuite sélectionné le fichier release.jar :
 
  ![image](https://user-images.githubusercontent.com/61800452/151630962-cc54ccbe-7cf9-4f2e-8f0c-f60bf84a9010.png)
 
-Téléchargez-le etmettez le dans un nouveau dossier
+Téléchargez-le et mettez le dans un nouveau dossier
 enfin, exécuté le (attention vous devez avoir Java 17 installé)
 
 ![image](https://user-images.githubusercontent.com/61800452/151630975-6c237044-bb3b-417a-894f-ecbe5548165f.png)
